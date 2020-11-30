@@ -394,12 +394,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 firebase.initializeApp({
-  apiKey: "AIzaSyB1uYrfoU0x36FzJnmr_M5pDbkfTf4iifQ",
-  authDomain: "normanmultiuser.firebaseapp.com",
-  databaseURL: "https://normanmultiuser.firebaseio.com",
-  projectId: "normanmultiuser",
-  storageBucket: "normanmultiuser.appspot.com",
-  messagingSenderId: "613134892355"
+ 
+    apiKey: "AIzaSyDk7Mt_2_0FCtzW4ayUP2NF2EPIIOmE7eQ",
+    authDomain: "norman-77e05.firebaseapp.com",
+    databaseURL: "https://norman-77e05.firebaseio.com",
+    projectId: "norman-77e05",
+    storageBucket: "norman-77e05.appspot.com",
+    messagingSenderId: "91463035343",
+    appId: "1:91463035343:web:6cbea632efb728f496caba"
+
 });
 
 // let currentFileInfo = null
