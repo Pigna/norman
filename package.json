@@ -9,7 +9,7 @@
     "deploy": "npm run build && surge dist normanmulti.surge.sh"
   },
   "dependencies": {
-    "aframe": "^0.7.1",
+    "aframe": "^1.1.0",
     "firebase": "^3.7.8",
     "firebaseui": "^1.0.1",
     "jquery": "^3.5.1",
