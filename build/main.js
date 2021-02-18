@@ -1545,7 +1545,7 @@ var setupThumbStickDirectionEvents = function setupThumbStickDirectionEvents(con
       up = false,
       down = false,
       c = controller;
-  c.addEventListener('thumbstickmoved', function (e) {
+  c.addEventListener('axismove', function (e) {
     var _e$detail$axis = _slicedToArray(e.detail.axis, 2),
         xAxis = _e$detail$axis[0],
         yAxis = _e$detail$axis[1];
