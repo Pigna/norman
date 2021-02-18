@@ -557,7 +557,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 	  console.log('loginshizzle');
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     ui.start('#firebaseui-auth-container', {
-      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID,firebase.auth.EmailAuthProvider.PROVIDER_ID,firebase.auth.FacebookAuthProvider.PROVIDER_ID],
+      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
       callbacks: {
         signInSuccess: function signInSuccess() {
           return false;
@@ -1548,8 +1548,8 @@ var setupThumbStickDirectionEvents = function setupThumbStickDirectionEvents(con
       c = controller;
   c.addEventListener('axismove', function (e) {
     var _e$detail$axis = _slicedToArray(e.detail.axis, 2),
-        xAxis = _e$detail$axis[0],
-        yAxis = _e$detail$axis[1];
+        xAxis = _e$detail$axis[2],
+        yAxis = _e$detail$axis[3];
 
     if (xAxis > thresh && !right) {
       c.emit('RIGHT_ON');
