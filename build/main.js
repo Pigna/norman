@@ -1433,12 +1433,14 @@ AFRAME.registerComponent('norman', {
       this.grabbedBy = null;
       var el = this.el,
           normObj3D = el.object3D,
-          pos = new THREE.Vector3(),
-          rot = new THREE.Quaternion(),
+          pos = normObj3D.getWorldPosition(pos),
+          quat = new THREE.Quaternion(),
           radToDeg = THREE.Math.radToDeg;
 
-		  normObj3D.getWorldPosition(pos);
-		  normObj3D.getWorldQuaternion(rot);
+	  normObj3D.getWorldQuaternion(quat);
+	  var rot = new THREE.Euler().setFromQuaternion(quat);
+
+		  
 
       el.sceneEl.object3D.add(normObj3D);
       el.setAttribute('position', pos);
