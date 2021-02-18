@@ -360,7 +360,7 @@ AFRAME.registerComponent('anim', {
     // console.log('indices: ', indices)
 
     geometry.setIndex(new THREE.BufferAttribute(new Uint16Array(indices), 1));
-    geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
     geometry.attributes.position.needsUpdate = true;
   }
 });
@@ -937,9 +937,9 @@ AFRAME.registerComponent('norman', {
 
     var normObj3D = el.object3D;
     sceneMarker.updateMatrixWorld();
-    var worldToLocal = new THREE.Matrix4().getInverse(sceneMarker.matrixWorld);
+    var worldToLocal = new THREE.Matrix4().invert(sceneMarker.matrixWorld);
     sceneMarker.add(normObj3D);
-    normObj3D.applyMatrix(worldToLocal);
+    normObj3D.applyMatrix4(worldToLocal);
 
     _lodash2.default.each(this.tracks, function (animToTransform) {
       var animDataNewReg = _this3.transformAnimData(animToTransform.components.anim.animData, normObj3D.matrix);
@@ -1419,9 +1419,10 @@ AFRAME.registerComponent('norman', {
 
 
       handObj3D.updateMatrixWorld();
-      var worldToLocal = new THREE.Matrix4().getInverse(handObj3D.matrixWorld);
+	  
+      var worldToLocal = new THREE.Matrix4().invert(handObj3D.matrixWorld);
       handObj3D.add(normObj3D);
-      normObj3D.applyMatrix(worldToLocal);
+      normObj3D.applyMatrix4(worldToLocal);
     }
   },
   ungrab: function ungrab(hand) {
@@ -1432,10 +1433,12 @@ AFRAME.registerComponent('norman', {
       this.grabbedBy = null;
       var el = this.el,
           normObj3D = el.object3D,
-          pos = normObj3D.getWorldPosition(),
-          rot = normObj3D.getWorldRotation(),
+          pos = new THREE.Vector3(),
+          rot = new THREE.Quaternion(),
           radToDeg = THREE.Math.radToDeg;
 
+		  normObj3D.getWorldPosition(pos);
+		  normObj3D.getWorldQuaternion(rot);
 
       el.sceneEl.object3D.add(normObj3D);
       el.setAttribute('position', pos);
