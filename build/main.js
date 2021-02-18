@@ -1702,15 +1702,22 @@ exports.default = function (target) {
 
   // console.log('WHAAA: ', target)
 
-  var geometry = new THREE.Geometry(),
+  var geometry = new THREE.BufferGeometry(),
       material = new THREE.LineBasicMaterial({
     color: color,
     transparent: true,
     opacity: 0.5
   });
+  var vertices2 = new Float32Array([
+   -1.0, -1.0,  1.0,
+	1.0, -1.0,  1.0,
+	1.0,  1.0,  1.0,
 
-  geometry.vertices = [{ x: 0, y: 0, z: 0 }, { x: length, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { x: -length, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: length, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: -length, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: length }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: -length }];
-
+	1.0,  1.0,  1.0,
+   -1.0,  1.0,  1.0,
+   -1.0, -1.0,  1.0]);
+  //geometry.vertices = [{ x: 0, y: 0, z: 0 }, { x: length, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { x: -length, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: length, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: -length, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: length }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: -length }];
+  geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices2, 3 ) );
   var mesh = new THREE.LineSegments(geometry, material);
   target.add(mesh);
 
