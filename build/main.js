@@ -554,9 +554,10 @@ firebase.auth().onAuthStateChanged(function (user) {
     // firebase.auth().signOut()
 
   } else {
+	  console.log('loginshizzle');
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     ui.start('#firebaseui-auth-container', {
-      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID,firebase.auth.EmailAuthProvider.PROVIDER_ID,firebase.auth.FacebookAuthProvider.PROVIDER_ID],
       callbacks: {
         signInSuccess: function signInSuccess() {
           return false;
