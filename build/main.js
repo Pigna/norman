@@ -1023,6 +1023,7 @@ AFRAME.registerComponent('norman', {
     secondaryHand.addEventListener('upperbuttonup', function () {
       return _this4.handleSecondaryUpperButtonUp();
     });
+
     secondaryHand.addEventListener('UP_ON', function () {
       return _this4.handleSecondaryUpOn();
     });
@@ -1544,7 +1545,7 @@ var setupThumbStickDirectionEvents = function setupThumbStickDirectionEvents(con
       up = false,
       down = false,
       c = controller;
-  c.addEventListener('axismove', function (e) {
+  c.addEventListener('thumbstickmoved', function (e) {
     var _e$detail$axis = _slicedToArray(e.detail.axis, 2),
         xAxis = _e$detail$axis[0],
         yAxis = _e$detail$axis[1];
