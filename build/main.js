@@ -79,6 +79,13 @@ AFRAME.registerComponent('anim', {
   tick: function tick(time, timeDelta) {
     this.handlePlayhead(time);
     this.handleDraw();
+	var position = new THREE.Vector3();
+    var quaternion = new THREE.Quaternion();
+
+    return function () {
+      this.el.object3D.getWorldPosition(position);
+      this.el.object3D.getWorldQuaternion(quaternion);
+      // position and rotation now contain vector and quaternion in world space.
   },
   handlePlayhead: function handlePlayhead(time) {
     var normanComp = this.normanComp,
@@ -937,7 +944,13 @@ AFRAME.registerComponent('norman', {
 
     var normObj3D = el.object3D;
     sceneMarker.updateMatrixWorld();
-    var worldToLocal = new THREE.Matrix4().invert(sceneMarker.matrixWorld);
+    var worldToLocal = new THREE.Matrix4().copy(getInverse(sceneMarker));
+	var getInverse = function getInverse(m){
+		var m = this.matrixWorld;
+		m.invert()
+		return m;
+		
+	}
     sceneMarker.add(normObj3D);
     normObj3D.applyMatrix4(worldToLocal);
 
