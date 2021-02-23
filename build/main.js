@@ -79,6 +79,13 @@ AFRAME.registerComponent('anim', {
   tick: function tick(time, timeDelta) {
     this.handlePlayhead(time);
     this.handleDraw();
+	var position = new THREE.Vector3();
+    var quaternion = new THREE.Quaternion();
+
+    return function () {
+      this.el.object3D.getWorldPosition(position);
+      this.el.object3D.getWorldQuaternion(quaternion);
+      // position and rotation now contain vector and quaternion in world space.
   },
   handlePlayhead: function handlePlayhead(time) {
     var normanComp = this.normanComp,
@@ -360,7 +367,7 @@ AFRAME.registerComponent('anim', {
     // console.log('indices: ', indices)
 
     geometry.setIndex(new THREE.BufferAttribute(new Uint16Array(indices), 1));
-    geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
     geometry.attributes.position.needsUpdate = true;
   }
 });
@@ -394,12 +401,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 firebase.initializeApp({
-  apiKey: "AIzaSyAr9U3u2GA1S51bU-ykG9woyBnGHpMaPA8",
-  authDomain: "norman-multiuser.firebaseapp.com",
-  databaseURL: "https://norman-multiuser.firebaseio.com",
-  projectId: "norman-multiuser",
-  storageBucket: "norman-multiuser.appspot.com",
-  messagingSenderId: "1062924419675"
+    apiKey: "AIzaSyDk7Mt_2_0FCtzW4ayUP2NF2EPIIOmE7eQ",
+    authDomain: "norman-77e05.firebaseapp.com",
+    databaseURL: "https://norman-77e05.firebaseio.com",
+    projectId: "norman-77e05",
+    storageBucket: "norman-77e05.appspot.com",
+    messagingSenderId: "91463035343",
+    appId: "1:91463035343:web:6cbea632efb728f496caba"
 });
 
 // let currentFileInfo = null
@@ -553,6 +561,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     // firebase.auth().signOut()
 
   } else {
+	  console.log('loginshizzle');
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     ui.start('#firebaseui-auth-container', {
       signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
@@ -935,9 +944,15 @@ AFRAME.registerComponent('norman', {
 
     var normObj3D = el.object3D;
     sceneMarker.updateMatrixWorld();
-    var worldToLocal = new THREE.Matrix4().getInverse(sceneMarker.matrixWorld);
+    var worldToLocal = new THREE.Matrix4().copy(getInverse(sceneMarker));
+	var getInverse = function getInverse(m){
+		var m = this.matrixWorld;
+		m.invert()
+		return m;
+		
+	}
     sceneMarker.add(normObj3D);
-    normObj3D.applyMatrix(worldToLocal);
+    normObj3D.applyMatrix4(worldToLocal);
 
     _lodash2.default.each(this.tracks, function (animToTransform) {
       var animDataNewReg = _this3.transformAnimData(animToTransform.components.anim.animData, normObj3D.matrix);
@@ -1022,6 +1037,7 @@ AFRAME.registerComponent('norman', {
     secondaryHand.addEventListener('upperbuttonup', function () {
       return _this4.handleSecondaryUpperButtonUp();
     });
+
     secondaryHand.addEventListener('UP_ON', function () {
       return _this4.handleSecondaryUpOn();
     });
@@ -1416,9 +1432,10 @@ AFRAME.registerComponent('norman', {
 
 
       handObj3D.updateMatrixWorld();
-      var worldToLocal = new THREE.Matrix4().getInverse(handObj3D.matrixWorld);
+	  
+      var worldToLocal = new THREE.Matrix4().invert(handObj3D.matrixWorld);
       handObj3D.add(normObj3D);
-      normObj3D.applyMatrix(worldToLocal);
+      normObj3D.applyMatrix4(worldToLocal);
     }
   },
   ungrab: function ungrab(hand) {
@@ -1429,10 +1446,14 @@ AFRAME.registerComponent('norman', {
       this.grabbedBy = null;
       var el = this.el,
           normObj3D = el.object3D,
-          pos = normObj3D.getWorldPosition(),
-          rot = normObj3D.getWorldRotation(),
+          pos = normObj3D.getWorldPosition(pos),
+          quat = new THREE.Quaternion(),
           radToDeg = THREE.Math.radToDeg;
 
+	  normObj3D.getWorldQuaternion(quat);
+	  var rot = new THREE.Euler().setFromQuaternion(quat);
+
+		  
 
       el.sceneEl.object3D.add(normObj3D);
       el.setAttribute('position', pos);
@@ -1701,15 +1722,22 @@ exports.default = function (target) {
 
   // console.log('WHAAA: ', target)
 
-  var geometry = new THREE.Geometry(),
+  var geometry = new THREE.BufferGeometry(),
       material = new THREE.LineBasicMaterial({
     color: color,
     transparent: true,
     opacity: 0.5
   });
+  var vertices2 = new Float32Array([
+   -1.0, -1.0,  1.0,
+	1.0, -1.0,  1.0,
+	1.0,  1.0,  1.0,
 
-  geometry.vertices = [{ x: 0, y: 0, z: 0 }, { x: length, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { x: -length, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: length, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: -length, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: length }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: -length }];
-
+	1.0,  1.0,  1.0,
+   -1.0,  1.0,  1.0,
+   -1.0, -1.0,  1.0]);
+  //geometry.vertices = [{ x: 0, y: 0, z: 0 }, { x: length, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { x: -length, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: length, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: -length, z: 0 }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: length }, { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: -length }];
+  geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices2, 3 ) );
   var mesh = new THREE.LineSegments(geometry, material);
   target.add(mesh);
 
