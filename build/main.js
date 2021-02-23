@@ -1545,8 +1545,8 @@ var setupThumbStickDirectionEvents = function setupThumbStickDirectionEvents(con
       c = controller;
   c.addEventListener('axismove', function (e) {
     var _e$detail$axis = _slicedToArray(e.detail.axis, 2),
-        xAxis = _e$detail$axis[0],
-        yAxis = _e$detail$axis[1];
+        xAxis = _e$detail$axis[2],
+        yAxis = _e$detail$axis[3];
 
     if (xAxis > thresh && !right) {
       c.emit('RIGHT_ON');
